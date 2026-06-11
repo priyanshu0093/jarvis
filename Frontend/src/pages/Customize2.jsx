@@ -1,0 +1,74 @@
+import React, { use, useContext, useState } from "react";
+import { userDataContext } from "../context/UserContext";
+import axios from "axios";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
+import Customize from "./Customize";
+
+const Customize2 = () => {
+  const { userData, backendImage, selectedImage, serverUrl, setUserData } =
+    useContext(userDataContext);
+  const [assistantName, setAssistantName] = useState(
+    userData?.assistantName || "",
+  );
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleUpdateAssistant = async () => {
+    setLoading(true) 
+    try {
+      let formData = new FormData();
+      formData.append("assistantName", assistantName);
+      if (backendImage) {
+        formData.append("assistantImage", backendImage);
+      } else {
+        formData.append("imageUrl", selectedImage);
+      }
+      const result = await axios.post(
+        `${serverUrl}/api/user/update`,
+        formData,
+        {
+          withCredentials: true,
+        });
+        setLoading(false) 
+      console.log(result.data);
+      setUserData(result.data);
+      navigate('/')
+    } catch (error) {
+      console.log(error.response?.data);
+    }
+  };
+
+  return (
+    <div className="w-full h-[100vh] bg-gradient-to-t from-black to-[#030353] flex justify-center items-center flex-col relative">
+      <IoMdArrowRoundBack
+        className="text-white h-[25px] w-[25px] absolute top-[30px] left-[30px] cursor-pointer"
+        onClick={() => navigate("/Customize")}
+      />
+      <h1 className="text-white text-[30px] mb-[30px]">
+        Enter your <span className="text-blue-200">Assistant Name</span>
+      </h1>
+      <input
+        type="text"
+        placeholder="eg. Neno"
+        className="w-full max-w-[40%] h-[60px] outline-none border-2 border-white text-white bg-transparent placeholder-gray-300 px-[20px] py-[10px] rounded-full text-[18px] mb-[25px]"
+        required
+        onChange={(e) => setAssistantName(e.target.value)}
+        value={assistantName}
+      />
+      {assistantName && (
+        <button
+          className="min-w-[300px] h-[60px] mt-[30px] bg-white font-semibold cursor-pointer  rounded-full "
+          onClick={() => {
+            handleUpdateAssistant();
+          }}
+          disabled={loading}
+        >
+          {!loading ? "Finally Create Your Assistant" : "Loading..."}
+        </button>
+      )}
+    </div>
+  );
+};
+
+export default Customize2;
