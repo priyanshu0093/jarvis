@@ -12,7 +12,7 @@ const app = express() ;
 const port = process.env.PORT || 5000 
 
 app.use(cors({
-    origin:"http://localhost:5173" , //request comes from frontend at this server Url
+    origin:"https://jarvis-2n0j.onrender.com" , //request comes from frontend at this server Url
     credentials:true 
 }))
 app.use(express.json()) 
