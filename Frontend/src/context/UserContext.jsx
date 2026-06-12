@@ -4,7 +4,7 @@ export const userDataContext = createContext();
 import axios from "axios";
 
 const UserContext = ({ children }) => {
-  const serverUrl = "http://localhost:8000"; // this is backend url
+  const serverUrl = "https://jarvis-ai-assistant-uwsy.onrender.com"; // this is backend url
 
   const [userData, setUserData] = useState(null);
 
