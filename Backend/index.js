@@ -12,7 +12,7 @@ const app = express() ;
 const port = process.env.PORT || 5000 
 
 app.use(cors({
-    origin:"http://localhost:5173" , //request comes from frontend at this server Url
+    origin:"https://jarvis-ai-assistant1-fgko.onrender.com" , //request comes from frontend at this server Url
     credentials:true 
 }))
 app.use(express.json()) 
